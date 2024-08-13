@@ -8,24 +8,24 @@ use assets::scene_system::scene_template::{SceneData, Scene};
 pub fn get_scene_data() -> SceneData {
     SceneData{ //Create new scene.
         identifiers: vec![
-            "ManorGate".to_string(),
-            "manorGate".to_string(),
-            "manorgate".to_string(),
-            "MANORGATE".to_string()
+            "ManorPath".to_string(),
+            "manorPath".to_string(),
+            "manorpath".to_string(),
+            "MANORPATH".to_string()
         ],
-        id: SceneId::ManorGate
+        id: SceneId::ManorPath
     }
 }
 
 /// Get the scene for this library.
 #[no_mangle]
 pub fn get_scene() -> Box<dyn Scene> {
-    Box::new(ManorGate)
+    Box::new(ManorPath)
 }
 
-pub struct ManorGate;
+pub struct ManorPath;
 
-impl Scene for ManorGate {
+impl Scene for ManorPath {
     fn enter_scene(&self, _event_system: &mut EventSystem) {
         println!("The Dark Forest stands before you. You need to go through it to get to Grandma's house. 
         The forest is notorious for disappearances. It's easy to get lost in it's vast labyranth. 

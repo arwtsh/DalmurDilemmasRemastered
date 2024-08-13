@@ -3,5 +3,6 @@
 members = [
     "main",
     "assets",
-    "scenes/manor_gate"
+    "scenes/manor_gate",
+    "scenes/manor_path"
 ]
