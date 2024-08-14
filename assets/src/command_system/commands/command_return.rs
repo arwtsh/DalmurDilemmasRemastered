@@ -17,8 +17,8 @@ impl Command for CommandReturn {
             "Return".to_string(),
             "q".to_string(),
             "Q".to_string(),
-            "e".to_string(),
-            "E".to_string()
+            "r".to_string(),
+            "R".to_string()
         ]
     }
     fn call_command(&self, _params: &String) {

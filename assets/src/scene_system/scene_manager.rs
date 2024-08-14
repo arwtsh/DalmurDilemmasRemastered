@@ -106,6 +106,18 @@ impl SceneManager {
             panic!("Scene {} does not have an entry in the all_scene_data hash map.", scene.to_string());
         }
     }
+
+    pub fn look_current_scene(&mut self) {
+        self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
+            self.scene_loader.get_scene(self.current_scene)
+        ).display_room_info(get_mut_event_system(), get_mut_save_system());
+    }
+
+    pub fn examine_in_current_scene(&mut self, examinable: &String) {
+        self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
+            self.scene_loader.get_scene(self.current_scene)
+        ).examine(examinable, get_mut_event_system(), get_mut_save_system());
+    }
 }
 
 //Gets scene data of every scene and puts it in a hash map.
@@ -128,9 +140,9 @@ fn move_scenes(move_to: SceneId) {
 
     //Tell the current scene that it is exiting.
     if let Some(scene) = scene_manager.current_scene.get_static_scene() { //Handle static scene
-        scene.exit_scene(get_mut_event_system());
+        scene.exit_scene(get_mut_event_system(), get_mut_save_system());
     } else {
-        scene_manager.scene_loader.get_scene(scene_manager.current_scene).exit_scene(get_mut_event_system()); //Handle dynamic scene
+        scene_manager.scene_loader.get_scene(scene_manager.current_scene).exit_scene(get_mut_event_system(), get_mut_save_system()); //Handle dynamic scene
     }
 
     //Set new current scene
@@ -139,9 +151,9 @@ fn move_scenes(move_to: SceneId) {
 
     //The the new scene that it is entering
     if let Some(scene) = move_to.get_static_scene() { //Handle static scene
-        scene.enter_scene(get_mut_event_system());
+        scene.enter_scene(get_mut_event_system(), get_mut_save_system());
     } else {
-        scene_manager.scene_loader.get_scene(move_to).enter_scene(get_mut_event_system()); //Handle dynamic scene
+        scene_manager.scene_loader.get_scene(move_to).enter_scene(get_mut_event_system(), get_mut_save_system()); //Handle dynamic scene
     }
 }
 
@@ -149,26 +161,8 @@ fn move_scenes(move_to: SceneId) {
 pub fn setup_events(event_system: &mut EventSystem) {
     //When the game starts, make the scene the main menu.
     event_system.add_listener(OnGameStart(|| {
-        get_scene_manager().main_menu.enter_scene(get_mut_event_system());
+        get_scene_manager().main_menu.enter_scene(get_mut_event_system(), get_mut_save_system());
     }));
 
     event_system.add_listener(OnMoveScenesRequest(move_scenes));
-
-    //Tell the scene the player wants to move left.
-    event_system.add_listener(crate::event_system::generated::EventDelegate::MoveLeft(|| {
-        if let Some(scene) = get_scene_manager().current_scene.get_static_scene() { //Handle static scene
-            scene.move_left(get_mut_event_system());
-        } else {
-            get_mut_scene_manager().scene_loader.get_scene(get_scene_manager().current_scene).move_left(get_mut_event_system()); //Handle dynamic scene
-        }
-    }));
-
-    //Tell the scene the player wants to move right.
-    event_system.add_listener(crate::event_system::generated::EventDelegate::MoveRight(|| {
-        if let Some(scene) = get_scene_manager().current_scene.get_static_scene() { //Handle static scene
-            scene.move_right(get_mut_event_system());
-        } else {
-            get_mut_scene_manager().scene_loader.get_scene(get_scene_manager().current_scene).move_right(get_mut_event_system()); //Handle dynamic scene
-        }
-    }));
 }

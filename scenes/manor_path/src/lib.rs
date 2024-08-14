@@ -1,5 +1,6 @@
 use assets::event_system::event_manager::EventSystem;
 use assets::event_system::events::EventType;
+use assets::save_system::save_system::SaveSystem;
 use assets::scene_system::scene_id::SceneId;
 use assets::scene_system::scene_template::{SceneData, Scene};
 
@@ -26,7 +27,7 @@ pub fn get_scene() -> Box<dyn Scene> {
 pub struct ManorPath;
 
 impl Scene for ManorPath {
-    fn enter_scene(&self, _event_system: &mut EventSystem) {
+    fn enter_scene(&self, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {
         println!("The Dark Forest stands before you. You need to go through it to get to Grandma's house. 
         The forest is notorious for disappearances. It's easy to get lost in it's vast labyranth. 
         Entering the forest, the path immediatly branches.");

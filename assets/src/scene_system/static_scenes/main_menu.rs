@@ -1,6 +1,6 @@
 use crate::event_system::event_manager::{get_event_system, EventSystem};
 use crate::event_system::events::EventType;
-use crate::save_system::save_system::get_save_system;
+use crate::save_system::save_system::{get_save_system, SaveSystem};
 use crate::scene_system::scene_template::Scene;
 use crate::command_system::command_manager::get_mut_command_manager;
 use crate::command_system::command_schemes::CommandSchemes;
@@ -14,7 +14,7 @@ impl MainMenu {
 }
 
 impl Scene for MainMenu {
-    fn enter_scene(&self, _event_system: &mut EventSystem) {
+    fn enter_scene(&self, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {
         get_mut_command_manager().active_commands_scheme = CommandSchemes::MainMenu;
 
         println!("DALMUR DILEMMAS REMASTERED");

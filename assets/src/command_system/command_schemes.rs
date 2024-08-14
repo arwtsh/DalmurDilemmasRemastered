@@ -60,10 +60,10 @@ impl CommandSchemes {
             },
             CommandSchemes::Gameplay => {
                 HashSet::from_iter(vec![
-                    CommandId::Left,
-                    CommandId::Right,
                     CommandId::Help,
-                    CommandId::Return
+                    CommandId::Return,
+                    CommandId::Look,
+                    CommandId::Examine
                 ])
             },
             CommandSchemes::ProfileSelect => {
@@ -80,22 +80,32 @@ impl CommandSchemes {
 
     pub fn get_scheme_help_text(&self) -> &str {
         match self {
-            CommandSchemes::MainMenu => 
-            "HELP will tell you the commands you can use.
-            \nPLAY will start the game.
-            \nPROFILE allows you switch between saves of the game.
-            \nCREDITS displays the creator of the game.
-            \nQUIT will exit the game to desktop.",
-            CommandSchemes::Gameplay => 
-            "You will be given a text description of a scene.
-            \nYou will chose to go either RIGHT or LEFT.
-            \nHELP repeats these tips.
-            \nRETURN goes back to the main menu.",
-            CommandSchemes::ProfileSelect => 
-            "LOAD + selection loads the new profile.
-            \nDELETE + selection will delete that profile.
-            \nNEW creates a new profile.
-            \nCANCEL returns to the main menu."
+            CommandSchemes::MainMenu => concat!(
+                "HELP will tell you the commands you can use.",
+                "\nPLAY will start the game.",
+                "\nPROFILE allows you switch between saves of the game.",
+                "\nCREDITS displays the creator of the game.",
+                "\nQUIT will exit the game to desktop."),
+            CommandSchemes::ProfileSelect => concat!(
+                "LOAD + selection loads the new profile.",
+                "\nDELETE + selection will delete that profile.",
+                "\nNEW creates a new profile.",
+                "\nCANCEL returns to the main menu."),
+            CommandSchemes::Gameplay => concat!(
+                "You will be given a text description of a scene.",
+		        "\nImportant or interactable objects in the scene will be CAPITALIZED.",
+		        "\nThere are a list of commands you can type to interact with the scene.",
+		        "\nCommands are not case-sensitive. Here they are capitalized to stand out against their description.",
+		        "\nMOVE + ADJACENT LOCATION changes which scene is being described. You can only move to locations mentioned in the scene.",
+		        "\nGRAB + LISTED ITEM adds an item listed in the scene into your inventory.",
+		        "\nINVENTORY lists all the items you have in your inventory.",
+		        "\nUSE + ITEM IN INVENTORY + ON + OBJECT IN SCENE will (if correct) progress the scene and possibly remove the item from your inventory.",
+		        "\nEXAMINE + OBJECT IN SCENE will describe the specified object in more detail.",
+		        "\nINSPECT + ITEM IN INVENTORY will describe the item, potentially revealing hidden clues.",
+		        "\nLOOK will repeat the description of the location.",
+		        "\nHELP repeats these tips.",
+		        "\nEXIT closes the game.",
+		        "\nOccasionally a puzzle will have unique commands. The puzzle will list those commands explicitly.")
         }
     }
 

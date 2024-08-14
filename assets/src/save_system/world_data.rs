@@ -33,15 +33,20 @@ impl SaveSystem {
         }  
     }
 
+    /// Sets a flag to true.
+    /// Returns true if it wasn't true before.
+    /// This should be used for events that only trigger once, instead of using 'if get_flag() { set_flag() }'
+    pub fn trigger_flag(&mut self, flag: &String) -> bool {
+        match self.get_mut_profile().world_data.flags.get_or_insert(HashMap::new()).insert(flag.clone(), true) {
+            Some(old_value) => old_value == false,
+            None => true
+        }
+    }
+
     /// Sets a world data flag.
     /// A flag is a boolean that when true represents progression in the world.
     /// For example: isDoorOpen
     pub fn set_flag(&mut self, name: String, flag: bool) {
-        //Initialize the flags if it is completely empty.
-        if self.get_profile().world_data.flags.is_none() {
-            let _ = &self.get_mut_profile().world_data.flags.insert(HashMap::new());
-        }
-
         //Get the flags, initialize it if it's default to Option::None, insert the new flag.
         //Then check if the flag was actually updated, and if so, flag the wrapper that the profile changed.
         if match self.get_mut_profile().world_data.flags.get_or_insert(HashMap::new()).insert(name, flag) {
