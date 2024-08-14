@@ -1,11 +1,13 @@
-use log::warn;
+use log::{info, warn};
 use serde::{Deserialize, Serialize};
-use crate::scene_system::scene_id::{SceneId, STARTING_SCENE};
+use crate::{inventory_system::items::ItemId, scene_system::scene_id::{SceneId, STARTING_SCENE}};
+use std::collections::HashSet;
 
-use super::save_system::SaveSystem;
+use super::{profile_data::ProfileData, save_system::SaveSystem};
 
 pub(super) const DEFAULT_PROFILE_PLAYER: PlayerData = PlayerData { //The player portion of the default profile data.
-    current_scene: STARTING_SCENE
+    current_scene: STARTING_SCENE,
+    inventory: Option::None
 };
 
 /// All of the save data that represents the current player state
@@ -15,7 +17,16 @@ pub(super)  struct PlayerData {
     //The current "gameplay" scene the player is in. 
     //This does not count scenes like the main menu. 
     //This variable is not referenced during runtime, only by loading saves.
-    pub current_scene: SceneId
+    pub current_scene: SceneId,
+    //The current inventory of the player.
+    //If the item is in this set, the player has it.
+    pub inventory: Option<HashSet<ItemId>>
+}
+
+impl ProfileData {
+    pub(super) fn get_inventory(&mut self) -> &mut HashSet<ItemId> {
+        self.player_data.inventory.get_or_insert_with(|| HashSet::new())
+    }
 }
 
 impl SaveSystem {
@@ -34,5 +45,26 @@ impl SaveSystem {
             //self.get_mut_profile_wrapper().has_changed = true;
             self.save_profile();
         }
+    }
+
+    /// Remove item from the inventory
+    pub fn lose_item(&mut self, item: &ItemId) {
+        if self.get_mut_profile().get_inventory().remove(item) {
+            info!("Removed item {} from player's inventory.", item.to_string());
+        } else {
+            warn!("Tried to remove item {} from player's inventory, but it was absent.", item.to_string());
+        }
+    }
+
+    pub fn add_item(&mut self, item: &ItemId) {
+        if self.get_mut_profile().get_inventory().insert(item.clone()) {
+            info!("Added item {} to player's inventory.", item.to_string());
+        } else {
+            warn!("Tried to add item {} to player's inventory, but it was already in there.", item.to_string());
+        }
+    }
+
+    pub fn is_item_in_inventory(&mut self, item: &ItemId) -> bool {
+        self.get_mut_profile().get_inventory().contains(item)
     }
 }

@@ -1,5 +1,7 @@
 use assets::event_system::event_manager::EventSystem;
 use assets::event_system::events::EventType;
+use assets::inventory_system::items::ItemId;
+use assets::save_system;
 use assets::save_system::save_system::SaveSystem;
 use assets::scene_system::scene_id::SceneId;
 use assets::scene_system::scene_template::{SceneData, Scene};
@@ -67,40 +69,57 @@ impl Scene for ManorGate {
 
     fn examine(&self, _examinable: &String,_event_system: &mut EventSystem, _save_system: &mut SaveSystem) {
         if _examinable == "gargoyle" {
-            if _save_system.get_flag(&String::from("is_gargoyle_broke")) {
-                if _save_system.get_flag(&String::from("is_math_clue_taken")) {
-                    println!("Its mouth is broken, making it considerably less scary.");
-                } else {
-                    println!("Its mouth is broken, revealing a MATH CLUE hiding inside of it.");
-                }
-            } else {
-                println!("It looks like there's a piece of paper stuck deep inside of its mouth.");
-            }
+            examine_gargoyle(_save_system);
         } else if _examinable == "bush" {
-            if _save_system.get_flag(&String::from("is_chisel_taken")) {
-                println!("It's a plant. Nothing useful.");
-            } else {
-                println!("It's a plant. There's a lot of junk caught underneath it next to the wall. Some broken glass, an old oil lantern, and a CHISEL.");
-            }
+            examine_bush(_save_system);
         } else if _examinable == "key box" {
-            if _save_system.get_flag(&String::from("is_box_open")) {
-                if _save_system.get_flag(&String::from("is_key_taken")) {
-                    println!("An empty open box.");
-                } else {
-                    println!("An open box with a lonesome key inside.");
-                }
-            } else {
-                println!("A box with a 4-letter combination lock. It most likely has the key to the gate inside.");
-            }
+            examine_key_box(_save_system);
         } else if _examinable == "gate" {
-            if _save_system.get_flag(&String::from("is_gate_open")) {
-                println!("A large gate leans slightly adjar, daring you to enter the manor property.");
-            } else {
-                println!("A large gate that seperates the manor property from the long road up the hill.");
-            }
+            examine_gate(_save_system);
         } else {
             println!("{} is not examinable.", _examinable);
         }
     }
 
+}
+
+
+fn examine_gargoyle(save_system: &mut SaveSystem) {
+    if save_system.get_flag(&String::from("is_gargoyle_broke")) {
+        if save_system.get_flag(&String::from("is_math_clue_taken")) {
+            println!("Its mouth is broken, making it considerably less scary.");
+        } else {
+            println!("Its mouth is broken, revealing a MATH CLUE hiding inside of it.");
+        }
+    } else {
+        println!("It looks like there's a piece of paper stuck deep inside of its mouth.");
+    }
+}
+
+fn examine_bush(save_system: &mut SaveSystem) {
+    if save_system.get_flag(&String::from("is_chisel_taken")) {
+        println!("It's a plant. Nothing useful.");
+    } else {
+        println!("It's a plant. There's a lot of junk caught underneath it next to the wall. Some broken glass, an old oil lantern, and a CHISEL.");
+    }
+}
+
+fn examine_key_box(save_system: &mut SaveSystem) {
+    if save_system.get_flag(&String::from("is_box_open")) {
+        if save_system.get_flag(&String::from("is_key_taken")) {
+            println!("An empty open box.");
+        } else {
+            println!("An open box with a lonesome key inside.");
+        }
+    } else {
+        println!("A box with a 4-letter combination lock. It most likely has the key to the gate inside.");
+    }
+}
+
+fn examine_gate(save_system: &mut SaveSystem) {
+    if save_system.get_flag(&String::from("is_gate_open")) {
+        println!("A large gate leans slightly adjar, daring you to enter the manor property.");
+    } else {
+        println!("A large gate that seperates the manor property from the long road up the hill.");
+    }
 }

@@ -21,6 +21,10 @@ pub mod scene_system {
     }
 }
 
+pub mod inventory_system {
+    pub mod items;
+}
+
 pub mod save_system;
 
 pub mod game_manager;
