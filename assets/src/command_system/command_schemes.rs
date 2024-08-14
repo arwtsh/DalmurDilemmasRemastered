@@ -63,7 +63,8 @@ impl CommandSchemes {
                     CommandId::Help,
                     CommandId::Return,
                     CommandId::Look,
-                    CommandId::Examine
+                    CommandId::Examine,
+                    CommandId::Grab
                 ])
             },
             CommandSchemes::ProfileSelect => {

@@ -51,6 +51,7 @@ impl SaveSystem {
     pub fn lose_item(&mut self, item: &ItemId) {
         if self.get_mut_profile().get_inventory().remove(item) {
             info!("Removed item {} from player's inventory.", item.to_string());
+            self.save_profile();
         } else {
             warn!("Tried to remove item {} from player's inventory, but it was absent.", item.to_string());
         }
@@ -59,6 +60,7 @@ impl SaveSystem {
     pub fn add_item(&mut self, item: &ItemId) {
         if self.get_mut_profile().get_inventory().insert(item.clone()) {
             info!("Added item {} to player's inventory.", item.to_string());
+            self.save_profile();
         } else {
             warn!("Tried to add item {} to player's inventory, but it was already in there.", item.to_string());
         }

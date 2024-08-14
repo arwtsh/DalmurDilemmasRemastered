@@ -1,4 +1,4 @@
-use crate::{event_system::event_manager::EventSystem, save_system::save_system::SaveSystem, scene_system::scene_id::SceneId};
+use crate::{event_system::event_manager::EventSystem, inventory_system::items::ItemId, save_system::save_system::SaveSystem, scene_system::scene_id::SceneId};
 
 /// Data that is stored by the scene manager at game initialization.
 /// It can be accessed even when the item isn't loaded.
@@ -19,6 +19,8 @@ pub trait Scene {
     fn display_room_info(&self, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {}
     /// Invoked when the player tries to examine something
     fn examine(&self, _examinable: &String,_event_system: &mut EventSystem, _save_system: &mut SaveSystem) {}
+    /// Invoked when the player tries to examine something
+    fn grab_item(&self, item: &ItemId,_event_system: &mut EventSystem, _save_system: &mut SaveSystem) {}
 }
 
 //

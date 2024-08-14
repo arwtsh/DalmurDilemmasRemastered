@@ -81,6 +81,26 @@ impl Scene for ManorGate {
         }
     }
 
+    fn grab_item(&self, item: &ItemId,_event_system: &mut EventSystem, _save_system: &mut SaveSystem) {
+        if item == &ItemId::Chisel {
+            if _save_system.trigger_flag(&String::from("is_chisel_taken")) {
+                grab_chisel(_save_system);
+                return;
+            }
+        } else if item == &ItemId::MathClue && _save_system.get_flag(&String::from("is_gargoyle_broke")){
+            if _save_system.trigger_flag(&String::from("is_math_clue_taken")) {
+                grab_math_clue(_save_system);
+                return;
+            }
+        } else if item == &ItemId::GateKey && _save_system.get_flag(&String::from("is_box_open")) {
+            if _save_system.trigger_flag(&String::from("is_key_taken")) {
+                grab_gate_key(_save_system);
+                return;
+            }
+        }
+
+        println!("Can't grab item {}.", item.to_string());
+    }
 }
 
 
@@ -122,4 +142,19 @@ fn examine_gate(save_system: &mut SaveSystem) {
     } else {
         println!("A large gate that seperates the manor property from the long road up the hill.");
     }
+}
+
+fn grab_chisel(save_system: &mut SaveSystem) {
+    println!("You pick up the chisel.");
+    save_system.add_item(&ItemId::Chisel);
+}
+
+fn grab_gate_key(save_system: &mut SaveSystem) {
+    println!("You pick up the gate key.");
+    save_system.add_item(&ItemId::GateKey);
+}
+
+fn grab_math_clue(save_system: &mut SaveSystem) {
+    println!("You pick up the math clue.");
+    save_system.add_item(&ItemId::MathClue);
 }

@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use crate::event_system::generated::EventDelegate::{OnGameStart, OnMoveScenesRequest};
 use crate::event_system::event_manager::{get_mut_event_system, EventSystem};
+use crate::inventory_system::items::ItemId;
 use crate::save_system::save_system::get_mut_save_system;
 use crate::scene_system::{scene_id::SceneId, scene_template::Scene};
 use crate::scene_system::scene_template::SceneData;
@@ -117,6 +118,12 @@ impl SceneManager {
         self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
             self.scene_loader.get_scene(self.current_scene)
         ).examine(examinable, get_mut_event_system(), get_mut_save_system());
+    }
+
+    pub fn grab_item_in_current_scene(&mut self, item: &ItemId) {
+        self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
+            self.scene_loader.get_scene(self.current_scene)
+        ).grab_item(item, get_mut_event_system(), get_mut_save_system());
     }
 }
 

@@ -5,14 +5,16 @@ use serde::{Deserialize, Serialize};
 #[derive(PartialEq, Eq, Hash, Clone, Copy, Serialize, Deserialize)]
 pub enum ItemId {
     Chisel,
-    MathClue
+    MathClue,
+    GateKey
 }
 
 impl ItemId {
     pub fn to_string(&self) -> &'static str {
         match self {
             ItemId::Chisel => "Chisel",
-            ItemId::MathClue => "MathClue"
+            ItemId::MathClue => "MathClue",
+            ItemId::GateKey => "GateKey"
         }
     }
 }
@@ -34,5 +36,13 @@ pub(super) const ITEM_PARSES: phf::Map<&'static str, ItemId> = phf_map! {
     "mathClue" => ItemId::MathClue,
     "Mathclue" => ItemId::MathClue,
     "mathclue" => ItemId::MathClue,
-    "MATHCLUE" => ItemId::MathClue
+    "MATHCLUE" => ItemId::MathClue,
+    "Gate Key" => ItemId::GateKey,
+    "Gate key" => ItemId::GateKey,
+    "gate Key" => ItemId::GateKey,
+    "GATE KEY" => ItemId::GateKey,
+    "GateKey" => ItemId::GateKey,
+    "Gatekey" => ItemId::GateKey,
+    "gateKey" => ItemId::GateKey,
+    "GATEKEY" => ItemId::GateKey
 };
