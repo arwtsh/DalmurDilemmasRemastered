@@ -64,7 +64,10 @@ impl CommandSchemes {
                     CommandId::Return,
                     CommandId::Look,
                     CommandId::Examine,
-                    CommandId::Grab
+                    CommandId::Grab,
+                    CommandId::Inventory,
+                    CommandId::Inspect,
+                    CommandId::Use
                 ])
             },
             CommandSchemes::ProfileSelect => {

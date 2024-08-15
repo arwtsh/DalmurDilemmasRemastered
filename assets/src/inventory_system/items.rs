@@ -13,8 +13,16 @@ impl ItemId {
     pub fn to_string(&self) -> &'static str {
         match self {
             ItemId::Chisel => "Chisel",
-            ItemId::MathClue => "MathClue",
-            ItemId::GateKey => "GateKey"
+            ItemId::MathClue => "Math Clue",
+            ItemId::GateKey => "Gate Key"
+        }
+    }
+
+    pub fn get_description(&self) -> &'static str {
+        match self {
+            ItemId::Chisel => "A simple mason chisel made for cutting stone.",
+            ItemId::GateKey => "A golden skeleton key with a caligraphic D as the head. A matching symbol is also the centralpiece decoration of the gate.",
+            ItemId::MathClue => "A small scrap of paper that reads \"2 + 2 = \" in poor handrighting. Whoever wrote it didn't have very good education, one of the numbers is backwards."
         }
     }
 }

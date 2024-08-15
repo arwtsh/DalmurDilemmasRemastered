@@ -11,6 +11,9 @@ pub mod command_profile_new;
 pub mod command_profile_cancel;
 pub mod command_return;
 pub mod command_grab;
+pub mod command_inventory;
+pub mod command_inspect;
+pub mod command_use;
 
 use std::slice::Iter;
 
@@ -30,7 +33,10 @@ pub enum CommandId {
     Return,
     Look,
     Examine,
-    Grab
+    Grab,
+    Inventory,
+    Inspect,
+    Use
 }
 
 impl CommandId {
@@ -51,7 +57,10 @@ impl CommandId {
             CommandId::Return => "ReturnToMainMenu",
             CommandId::Look => "Look",
             CommandId::Examine => "Examine",
-            CommandId::Grab => "Grab"
+            CommandId::Grab => "Grab",
+            CommandId::Inventory => "Inventory",
+            CommandId::Inspect => "Inspect",
+            CommandId::Use => "Use"
         }
     }
 
@@ -71,7 +80,10 @@ impl CommandId {
             CommandId::Return => Box::new(command_return::CommandReturn),
             CommandId::Look => Box::new(command_look::CommandLook),
             CommandId::Examine => Box::new(command_examine::CommandExamine),
-            CommandId::Grab => Box::new(command_grab::CommandGrab)
+            CommandId::Grab => Box::new(command_grab::CommandGrab),
+            CommandId::Inventory => Box::new(command_inventory::CommandInventory),
+            CommandId::Inspect => Box::new(command_inspect::CommandInspect),
+            CommandId::Use => Box::new(command_use::CommandUse)
         }
     }
 
@@ -79,7 +91,7 @@ impl CommandId {
     /// This is useful for initializing all the commands at game start.
     /// This does not include the None command.
     pub fn iter() -> Iter<'static, CommandId> {
-        static COMMANDS: [CommandId; 13] = [
+        static COMMANDS: [CommandId; 16] = [
             CommandId::Exit,
             CommandId::Help,
             CommandId::Credits,
@@ -92,7 +104,10 @@ impl CommandId {
             CommandId::Return,
             CommandId::Look,
             CommandId::Examine,
-            CommandId::Grab
+            CommandId::Grab,
+            CommandId::Inventory,
+            CommandId::Inspect,
+            CommandId::Use
         ];
         COMMANDS.iter()
     }

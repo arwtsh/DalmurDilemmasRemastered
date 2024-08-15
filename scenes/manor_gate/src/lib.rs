@@ -101,6 +101,16 @@ impl Scene for ManorGate {
 
         println!("Can't grab item {}.", item.to_string());
     }
+
+    fn use_item(&self, _item: &ItemId, _target: &String, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {
+        if _item == &ItemId::Chisel && _target == "gargoyle" {
+            try_break_gargoyle(_save_system);
+        } else if _item == &ItemId::GateKey && _target == "gate" {
+            try_open_gate(_save_system);
+        } else {
+            println!("Nothing happens.");
+        }
+    }
 }
 
 
@@ -157,4 +167,22 @@ fn grab_gate_key(save_system: &mut SaveSystem) {
 fn grab_math_clue(save_system: &mut SaveSystem) {
     println!("You pick up the math clue.");
     save_system.add_item(&ItemId::MathClue);
+}
+
+fn try_break_gargoyle(save_system: &mut SaveSystem) {
+    if save_system.trigger_flag(&String::from("is_gargoyle_broke")) {
+        println!("You broke the gargoyle's mouth enough to expose a piece of paper. It looks like a MATH CLUE.");
+        save_system.lose_item(&ItemId::Chisel)
+    } else {
+        println!("Nothing happens.");
+    }
+}
+
+fn try_open_gate(save_system: &mut SaveSystem) {
+    if save_system.trigger_flag(&String::from("is_gate_open")) {
+        println!("You slide the key into the gate lock and you hear a satisfying click. The gate creeks as it opens, allowing you access to the misty MANOR PATH.");
+        save_system.lose_item(&ItemId::GateKey)
+    } else {
+        println!("Nothing happens.");
+    }
 }

@@ -1,7 +1,7 @@
 use log::{info, warn};
 use serde::{Deserialize, Serialize};
 use crate::{inventory_system::items::ItemId, scene_system::scene_id::{SceneId, STARTING_SCENE}};
-use std::collections::HashSet;
+use std::collections::{hash_set::Iter, HashSet};
 
 use super::{profile_data::ProfileData, save_system::SaveSystem};
 
@@ -68,5 +68,10 @@ impl SaveSystem {
 
     pub fn is_item_in_inventory(&mut self, item: &ItemId) -> bool {
         self.get_mut_profile().get_inventory().contains(item)
+    }
+
+    /// Get an iterator of all items in the player's inventory.
+    pub fn get_inventory_iter(&mut self) -> Iter<'_, ItemId> {
+        self.get_mut_profile().get_inventory().iter()
     }
 }

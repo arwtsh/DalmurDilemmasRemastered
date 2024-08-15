@@ -125,6 +125,12 @@ impl SceneManager {
             self.scene_loader.get_scene(self.current_scene)
         ).grab_item(item, get_mut_event_system(), get_mut_save_system());
     }
+
+    pub fn use_item_in_current_scene(&mut self, item: &ItemId, target: &String) {
+        self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
+            self.scene_loader.get_scene(self.current_scene)
+        ).use_item(item, target, get_mut_event_system(), get_mut_save_system());
+    }
 }
 
 //Gets scene data of every scene and puts it in a hash map.
