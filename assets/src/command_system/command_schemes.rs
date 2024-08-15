@@ -67,7 +67,9 @@ impl CommandSchemes {
                     CommandId::Grab,
                     CommandId::Inventory,
                     CommandId::Inspect,
-                    CommandId::Use
+                    CommandId::Use,
+                    CommandId::Puzzle,
+                    CommandId::Move
                 ])
             },
             CommandSchemes::ProfileSelect => {

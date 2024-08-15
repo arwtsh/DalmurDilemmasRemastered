@@ -92,7 +92,7 @@ impl Scene for ManorGate {
                 grab_math_clue(_save_system);
                 return;
             }
-        } else if item == &ItemId::GateKey && _save_system.get_flag(&String::from("is_box_open")) {
+        } else if item == &ItemId::GateKey && _save_system.get_flag(&String::from("is_key_box_open")) {
             if _save_system.trigger_flag(&String::from("is_key_taken")) {
                 grab_gate_key(_save_system);
                 return;
@@ -110,6 +110,18 @@ impl Scene for ManorGate {
         } else {
             println!("Nothing happens.");
         }
+    }
+
+    fn puzzle(&self, _puzzle: &String, _solution: &String, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {
+        if _puzzle == "lock" {
+            lock_puzzle(_solution, _save_system);
+        } else {
+            println!("That puzzle is not available right now.");
+        }
+    }
+
+    fn is_move_valid(&self, _scene: SceneId, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) -> bool {
+        _scene == SceneId::ManorPath && _save_system.get_flag(&String::from("is_gate_open"))
     }
 }
 
@@ -135,11 +147,11 @@ fn examine_bush(save_system: &mut SaveSystem) {
 }
 
 fn examine_key_box(save_system: &mut SaveSystem) {
-    if save_system.get_flag(&String::from("is_box_open")) {
+    if save_system.get_flag(&String::from("is_key_box_open")) {
         if save_system.get_flag(&String::from("is_key_taken")) {
             println!("An empty open box.");
         } else {
-            println!("An open box with a lonesome key inside.");
+            println!("An open box with a lonesome GATE KEY inside.");
         }
     } else {
         println!("A box with a 4-letter combination lock. It most likely has the key to the gate inside.");
@@ -184,5 +196,24 @@ fn try_open_gate(save_system: &mut SaveSystem) {
         save_system.lose_item(&ItemId::GateKey)
     } else {
         println!("Nothing happens.");
+    }
+}
+
+fn lock_puzzle(solution: &String, save_system: &mut SaveSystem) {
+    if save_system.get_flag(&String::from("is_key_box_open")) {
+        if solution == "fish" {
+            println!("Just for fun you reset the lock and turn the dials to f-i-s-h. Huh. It doesn't give you as much excitement the second time unlocking it.");
+        } else {
+            println!("It's already unlocked.");
+        }
+    } else {
+        if solution == "four" {
+            println!("You turn the dials to f-o-u-r then tug on the lock and... it moves slightly but does not come off. The f is right, but the answer must not be as obvious.");
+        } else if solution == "fish" {
+            println!("You turn the dials to f-i-s-h then tug on the lock and... it pops off. Your excitement is only rivalved by your confusion on why that worked. You open the box to reveal the GATE KEY.");
+            save_system.set_flag(String::from("is_key_box_open"), true);
+        } else {
+            println!("The code is wrong.");
+        }
     }
 }

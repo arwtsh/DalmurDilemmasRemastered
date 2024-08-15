@@ -14,6 +14,8 @@ pub mod command_grab;
 pub mod command_inventory;
 pub mod command_inspect;
 pub mod command_use;
+pub mod command_puzzle;
+pub mod command_move;
 
 use std::slice::Iter;
 
@@ -36,7 +38,9 @@ pub enum CommandId {
     Grab,
     Inventory,
     Inspect,
-    Use
+    Use,
+    Puzzle,
+    Move
 }
 
 impl CommandId {
@@ -60,7 +64,9 @@ impl CommandId {
             CommandId::Grab => "Grab",
             CommandId::Inventory => "Inventory",
             CommandId::Inspect => "Inspect",
-            CommandId::Use => "Use"
+            CommandId::Use => "Use",
+            CommandId::Puzzle => "Puzzle",
+            CommandId::Move => "Move"
         }
     }
 
@@ -83,7 +89,9 @@ impl CommandId {
             CommandId::Grab => Box::new(command_grab::CommandGrab),
             CommandId::Inventory => Box::new(command_inventory::CommandInventory),
             CommandId::Inspect => Box::new(command_inspect::CommandInspect),
-            CommandId::Use => Box::new(command_use::CommandUse)
+            CommandId::Use => Box::new(command_use::CommandUse),
+            CommandId::Puzzle => Box::new(command_puzzle::CommandPuzzle),
+            CommandId::Move => Box::new(command_move::CommandMove)
         }
     }
 
@@ -91,7 +99,7 @@ impl CommandId {
     /// This is useful for initializing all the commands at game start.
     /// This does not include the None command.
     pub fn iter() -> Iter<'static, CommandId> {
-        static COMMANDS: [CommandId; 16] = [
+        static COMMANDS: [CommandId; 18] = [
             CommandId::Exit,
             CommandId::Help,
             CommandId::Credits,
@@ -107,7 +115,9 @@ impl CommandId {
             CommandId::Grab,
             CommandId::Inventory,
             CommandId::Inspect,
-            CommandId::Use
+            CommandId::Use,
+            CommandId::Puzzle,
+            CommandId::Move
         ];
         COMMANDS.iter()
     }

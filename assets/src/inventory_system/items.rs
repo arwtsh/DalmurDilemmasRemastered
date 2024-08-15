@@ -48,9 +48,11 @@ pub(super) const ITEM_PARSES: phf::Map<&'static str, ItemId> = phf_map! {
     "Gate Key" => ItemId::GateKey,
     "Gate key" => ItemId::GateKey,
     "gate Key" => ItemId::GateKey,
+    "gate key" => ItemId::GateKey,
     "GATE KEY" => ItemId::GateKey,
     "GateKey" => ItemId::GateKey,
     "Gatekey" => ItemId::GateKey,
+    "gatekey" => ItemId::GateKey,
     "gateKey" => ItemId::GateKey,
     "GATEKEY" => ItemId::GateKey
 };

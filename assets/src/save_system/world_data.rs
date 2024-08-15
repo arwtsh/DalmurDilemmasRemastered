@@ -57,4 +57,9 @@ impl SaveSystem {
             self.save_profile();
         }
     }
+
+    pub fn clear_flags(&mut self) {
+        self.get_mut_profile().world_data.flags.get_or_insert(HashMap::new()).clear();
+        self.save_profile();
+    }
 }

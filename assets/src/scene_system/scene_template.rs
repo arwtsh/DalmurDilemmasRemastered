@@ -23,6 +23,10 @@ pub trait Scene {
     fn grab_item(&self, item: &ItemId,_event_system: &mut EventSystem, _save_system: &mut SaveSystem) {}
     /// Use an item on something interactable in the scene
     fn use_item(&self, _item: &ItemId, _target: &String, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {}
+    /// Unique puzzle system
+    fn puzzle(&self, _puzzle: &String, _solution: &String, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) {}
+    /// Check if the scene can move to that position.
+    fn is_move_valid(&self, _scene: SceneId, _event_system: &mut EventSystem, _save_system: &mut SaveSystem) -> bool { false }
 }
 
 //

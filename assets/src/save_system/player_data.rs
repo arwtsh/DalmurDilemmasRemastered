@@ -74,4 +74,10 @@ impl SaveSystem {
     pub fn get_inventory_iter(&mut self) -> Iter<'_, ItemId> {
         self.get_mut_profile().get_inventory().iter()
     }
+
+    pub fn clear_inventory(&mut self) {
+        info!("Cleared player's inventory.");
+        self.get_mut_profile().get_inventory().clear();
+        self.save_profile();
+    }
 }

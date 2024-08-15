@@ -86,9 +86,11 @@ fn quit_game() {
 
 /// Logic that happens when the player wins the game.
 fn win_game() {
-    println!("You win!");
+    println!("\n\t\t\tCONGRATULATIONS, YOU WIN!\n");
     //Reset the profile so the player can play again.
     get_mut_save_system().set_current_scene(STARTING_SCENE);
+    get_mut_save_system().clear_flags();
+    get_mut_save_system().clear_inventory();
     //Move the player to the main menu
     get_event_system().invoke(OnMoveScenesRequest(MainMenu));
 }
@@ -98,6 +100,8 @@ fn lose_game() {
     println!("You lose, try again!");
     //Reset the profile so the player can play again.
     get_mut_save_system().set_current_scene(STARTING_SCENE);
+    get_mut_save_system().clear_flags();
+    get_mut_save_system().clear_inventory();
     //Move the player to the main menu
     get_event_system().invoke(OnMoveScenesRequest(MainMenu));
 }

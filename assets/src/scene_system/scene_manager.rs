@@ -131,7 +131,22 @@ impl SceneManager {
             self.scene_loader.get_scene(self.current_scene)
         ).use_item(item, target, get_mut_event_system(), get_mut_save_system());
     }
-}
+
+    pub fn solve_puzzle_in_current_scene(&mut self, puzzle: &String, solution: &String) {
+        self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
+            self.scene_loader.get_scene(self.current_scene)
+        ).puzzle(puzzle, solution, get_mut_event_system(), get_mut_save_system());
+    }
+
+    pub fn move_command(&mut self, scene: SceneId) {
+        if self.current_scene.get_static_scene().as_ref().unwrap_or_else(||
+            self.scene_loader.get_scene(self.current_scene)
+        ).is_move_valid(scene, get_mut_event_system(), get_mut_save_system()) {
+            move_scenes(scene);
+        } else {
+            println!("That room may not be adjacent or you may have misspelled something.");
+        }
+    }}
 
 //Gets scene data of every scene and puts it in a hash map.
 //The hash map makes it easily accessible.
